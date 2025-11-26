@@ -41,7 +41,7 @@ export function LegDetailView({ leg, fareType, onBack }: LegDetailViewProps) {
   // Display priority: vehicleName > lineName > mode
   const displayName = leg.mode === 'WALK'
     ? 'Walk'
-    : (leg.vehicleName || leg.lineName || leg.mode);
+    : (leg.vehicleName );
 
   // Get fare for this leg (only for transit legs)
   const legFare = leg.mode !== 'WALK' && leg.fareProducts
@@ -51,10 +51,6 @@ export function LegDetailView({ leg, fareType, onBack }: LegDetailViewProps) {
   // Get mode color
   const modeColors: Record<string, string> = {
     'JEEPNEY': 'from-blue-500 to-blue-600',
-    'BUS': 'from-purple-500 to-purple-600',
-    'TRICYCLE': 'from-orange-500 to-orange-600',
-    'FERRY': 'from-cyan-500 to-cyan-600',
-    'TRANSIT': 'from-indigo-500 to-indigo-600',
     'WALK': 'from-green-500 to-green-600',
   };
 

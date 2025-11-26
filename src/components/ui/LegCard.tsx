@@ -3,9 +3,10 @@
  */
 
 import { ChevronRight } from 'lucide-react';
-import { cn, formatDuration, formatFare, getModeIcon, getModeColor, getDisplayFare } from '../../lib/utils';
+import { cn, formatDuration, formatFare, getModeIcon, getModeColor, getDisplayFare, formatStopName } from '../../lib/utils';
 import type { NormalizedLeg, FareType } from '../../lib/types';
 import * as LucideIcons from 'lucide-react';
+import { useState, useEffect } from 'react';
 import jeepneyIcon from '../../assets/jeepney-icon.svg';
 
 interface LegCardProps {
@@ -19,7 +20,20 @@ export function LegCard({ leg, fareType, onClick }: LegCardProps) {
   const IconComponent = (LucideIcons as any)[
     getModeIcon(leg.mode).charAt(0).toUpperCase() + getModeIcon(leg.mode).slice(1)
   ] || LucideIcons.Circle;
+  // State for formatted stop names
+  const [boardingLocation, setBoardingLocation] = useState<string>(" ");
+  const [alightingLocation, setAlightingLocation] = useState<string>(" ");
+  useEffect(() => {
+    // Fetch boarding location name
+    formatStopName(leg.from, leg.from.name).then(setBoardingLocation).catch(() => {
+      setBoardingLocation(leg.from.name || 'Unknown location');
+    });
 
+    // Fetch alighting location name
+    formatStopName(leg.to, leg.to.name).then(setAlightingLocation).catch(() => {
+      setAlightingLocation(leg.to.name || 'Unknown location');
+    });
+  }, [leg.from, leg.to]);
   // Display priority: vehicleName > lineName > mode
   const displayName = leg.mode === 'WALK'
     ? 'Walk'
@@ -31,25 +45,29 @@ export function LegCard({ leg, fareType, onClick }: LegCardProps) {
     : 0;
 
   return (
-    <button
+    <>
+    {leg.mode === 'JEEPNEY' && 
+      <button
       onClick={onClick}
       className={cn(
         'w-full flex items-center gap-3 p-3 rounded-lg border transition-all',
         'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700',
         'hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-md',
         'active:scale-[0.98]',
-        'text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1'
+        'text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1',
+        'flex flex-col items-center gap-1'
       )}
       aria-label={`View details for ${displayName}`}
-    >
+    > 
+    <div className="flex items-left gap-3"> 
       {/* Mode Icon */}
       <div className={cn(
         'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center',
         getModeColor(leg.mode)
       )}>
         
-        {leg.mode === 'JEEPNEY' && <img src={`${jeepneyIcon}`} alt={leg.mode} className="h-6 w-6" aria-hidden="true" />}
-        {leg.mode === 'WALK' && <IconComponent className="h-6 w-6" aria-hidden="true" />}
+        {leg.mode === 'JEEPNEY' && <img src={`${jeepneyIcon}`} alt={leg.mode} className="h-6 w-6" aria-hidden="true" style={{ filter: 'invert(1)' }} />}
+        {/* {leg.mode === 'WALK' && <IconComponent className="h-6 w-6" aria-hidden="true" />} */}
         
       </div>
 
@@ -62,7 +80,6 @@ export function LegCard({ leg, fareType, onClick }: LegCardProps) {
           {formatDuration(leg.duration)}
         </div>
       </div>
-
       {/* Fare and Chevron */}
       <div className="flex items-center gap-2 flex-shrink-0">
         {legFare > 0 && (
@@ -72,7 +89,92 @@ export function LegCard({ leg, fareType, onClick }: LegCardProps) {
         )}
         <ChevronRight className="h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
       </div>
+    </div>
+      {leg.mode === 'JEEPNEY' &&
+        <div className="pl-8 pt-2">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-1">
+              <div className="w-5 h-9  rounded-full bg-green-500 flex items-center justify-center">
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-medium mb-1">
+                GET ON
+              </div>
+              <div className="font-medium text-base text-gray-900 dark:text-gray-100">
+                {boardingLocation}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-1">
+              <div className="w-5 h-9 rounded-full bg-red-500 flex items-center justify-center">
+                
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-medium mb-1">
+                GET OFF
+              </div>
+              <div className="font-medium text-base text-gray-900 dark:text-gray-100">
+                {alightingLocation}
+              </div>
+            </div>
+          </div>
+        </div> }
     </button>
+    }
+    {leg.mode === 'WALK' && 
+    <button
+    onClick={onClick}
+    className={cn(
+      'w-full flex items-center gap-3 p-3 rounded-lg border transition-all',
+      'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700',
+      'hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-md',
+      'active:scale-[0.98]',
+      'text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1',
+      
+    )}
+    aria-label={`View details for ${displayName}`}
+  >
+    {/* Mode Icon */}
+    <div className={cn(
+      'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center',
+      getModeColor(leg.mode)
+    )}>
+      
+      {/* {leg.mode === 'JEEPNEY' && <img src={`${jeepneyIcon}`} alt={leg.mode} className="h-6 w-6" aria-hidden="true" style={{ filter: 'invert(1)' }} />} */}
+      {leg.mode === 'WALK' && <IconComponent className="h-6 w-6" aria-hidden="true" />}
+      
+    </div>
+
+    {/* Route Name and Duration */}
+    <div className="flex-1 min-w-0">
+      <div className="font-semibold text-sm text-gray-900 dark:text-gray-100 truncate text-wrap">
+        {displayName}
+      </div>
+      <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+        {formatDuration(leg.duration)}
+      </div>
+    </div>
+    {/* Fare and Chevron */}
+    <div className="flex items-center gap-2 flex-shrink-0">
+      {legFare > 0 && (
+        <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+          ₱{formatFare(legFare)}
+        </div>
+      )}
+      <ChevronRight className="h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
+    </div>
+    
+     
+  </button>}
+    
+    
+
+      
+    
+    </> 
   );
 }
 

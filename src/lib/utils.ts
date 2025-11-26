@@ -54,12 +54,9 @@ export function formatDistance(meters: number, _locale: string = 'en'): string {
  */
 export function getModeColor(mode: string): string {
   const colors: Record<string, string> = {
-    JEEPNEY: 'bg-yellow-500 text-gray-900',
-    BUS: 'bg-blue-600 text-white',
-    TRICYCLE: 'bg-orange-500 text-white',
+    JEEPNEY: 'bg-blue-500 text-gray-900',
     WALK: 'bg-green-600 text-white',
-    FERRY: 'bg-cyan-600 text-white',
-    TRANSIT: 'bg-purple-600 text-white',
+
   };
   return colors[mode.toUpperCase()] || 'bg-gray-600 text-white';
 }
@@ -70,11 +67,7 @@ export function getModeColor(mode: string): string {
 export function getModeIcon(mode: string): string {
   const icons: Record<string, string> = {
     JEEPNEY: 'bus',
-    BUS: 'bus',
-    TRICYCLE: 'bike',
     WALK: 'footprints',
-    FERRY: 'ship',
-    TRANSIT: 'train',
   };
   return icons[mode.toUpperCase()] || 'circle';
 }

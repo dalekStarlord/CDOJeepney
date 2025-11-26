@@ -5,9 +5,10 @@
 
 import { useTranslation } from 'react-i18next';
 import { Clock, ArrowRightLeft } from 'lucide-react';
-import { cn, formatDuration, formatFare, getModeColor, calculateTotalFare, calculateFareSavings } from '../../lib/utils';
+import { cn, formatDuration, formatFare, getModeColor, calculateTotalFare, calculateFareSavings, getModeIcon, formatStopName } from '../../lib/utils';
 import type { NormalizedItinerary, FareType } from '../../lib/types';
 import { motion } from 'framer-motion';
+import * as LucideIcons from 'lucide-react';
 import { getRouteColor } from '../../lib/polyline';
 import jeepneyIcon from '../../assets/jeepney-icon.svg';
 
@@ -29,16 +30,15 @@ export function RouteCard({
   onHover,
 }: RouteCardProps) {
   const { t, i18n } = useTranslation();
-  
+  const IconComponent = (LucideIcons as any)[getModeIcon('WALK').charAt(0).toUpperCase() + getModeIcon('WALK').slice(1)] || LucideIcons.Circle;
   // Get unique color for this route
   const routeColor = getRouteColor(itineraryIndex);
 
   // Calculate fare based on LTFRB matrix and fare type
   const fare = calculateTotalFare(itinerary, fareType);
   const savings = fareType === 'discount' ? calculateFareSavings(itinerary) : 0;
-
   const transitLegs = itinerary.legs.filter(leg => 
-    ['JEEPNEY', 'BUS', 'TRICYCLE', 'FERRY', 'TRANSIT'].includes(leg.mode)
+    ['JEEPNEY', 'WALK'].includes(leg.mode)
   );
 
   const handleClick = () => {
@@ -95,25 +95,26 @@ export function RouteCard({
               
               const modeColors: Record<string, string> = {
                 'JEEPNEY': 'bg-blue-500',
-                'BUS': 'bg-purple-500',
-                'TRICYCLE': 'bg-yellow-500',
-                'FERRY': 'bg-cyan-500',
-                'TRANSIT': 'bg-indigo-500',
+                'WALK': 'bg-green-500',
               };
               
               // Display priority: vehicleName > lineName > mode
               const displayName = leg.mode === 'WALK'
-                ? t('route.walk')
-                : (leg.vehicleName || leg.lineName?.split('-')[0] || leg.mode.slice(0, 4));
+                ? " "
+                : " ";
               
               return (
                 <div key={index} className="flex flex-col items-center gap-1">
                   <div className={cn(
-                    'w-12 h-12 rounded-full flex items-center justify-center text-white',
+                    'w-12 h-12 rounded-full flex items-center justify-center text-white ',
                     modeColors[leg.mode] || 'bg-gray-500'
                   )}>
+                    <div className="flex items-center justify-center ">
                   {leg.mode === 'JEEPNEY' && <img src={`${jeepneyIcon}`} alt={leg.mode} className="h-8 w-8" aria-hidden="true" style={{ filter: 'invert(1)' }} />}
+                  {leg.mode === 'WALK' && <IconComponent className="h-7 w-7 sm:h-3 sm:w-3" aria-hidden="true" color="white"/>}
                   </div>
+                  </div>
+                  
                   <span className="text-[9px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
                     {displayName}
                   </span>
@@ -138,10 +139,7 @@ export function RouteCard({
                   
                   const modeColors: Record<string, string> = {
                     'JEEPNEY': 'bg-blue-500',
-                    'BUS': 'bg-purple-500',
-                    'TRICYCLE': 'bg-yellow-500',
-                    'FERRY': 'bg-cyan-500',
-                    'TRANSIT': 'bg-indigo-500',
+                    'WALK': 'bg-green-500',
                   };
                   
                   return (
@@ -250,25 +248,27 @@ export function RouteCard({
             
             // Display priority: vehicleName > lineName > mode
             const displayName = leg.mode === 'WALK'
-              ? t('route.walk')
-              : (leg.vehicleName || leg.lineName || t(`modes.${leg.mode.toLowerCase()}`));
+              ? " "
+              : " ";
             
             return (
               <div
                 key={index}
                 className={cn(
-                  'px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md text-[10px] sm:text-xs font-medium flex items-center gap-1',
+                  'px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md text-[10px] sm:text-xs font-medium flex items-center gap-1 ',
                   getModeColor(leg.mode)
                 )}
               >
                 {/* <IconComponent className="h-2.5 w-2.5 sm:h-3 sm:w-3" aria-hidden="true" /> */}
-                <img src={`${jeepneyIcon}`} alt={leg.mode} className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                <span className="truncate max-w-[120px] sm:max-w-none">{displayName}</span>
+                {leg.mode === 'JEEPNEY' && 
+                <img src={`${jeepneyIcon}`} alt={leg.mode} className="h-2.5 w-2.5 sm:h-3 sm:w-3" style={{ filter: 'invert(1)' }} />}
+                {leg.mode === 'WALK' && <IconComponent className="h-2.5 w-2.5 sm:h-3 sm:w-3" aria-hidden="true" color="white"/>}
+                {/* <span className="truncate max-w-[120px] sm:max-w-none">{displayName}</span> */}
               </div>
             );
           })}
         </div>
-
+        
         </div>
       </div>
     </motion.div>
