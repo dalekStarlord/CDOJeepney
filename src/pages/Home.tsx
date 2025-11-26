@@ -206,7 +206,7 @@ export function Home() {
               {/* Journey Results Header */}
               <div className="flex items-center justify-between">
                 <h2 className="font-bold text-base text-gray-900 dark:text-gray-100">
-                  {sortedItineraries.length} {sortedItineraries.length === 1 ? t('plan.suggestedJourney') : t('plan.suggestedJourneysMulti')}
+                {sortedItineraries.length} {t('results.title')}
                 </h2>
               </div>
 

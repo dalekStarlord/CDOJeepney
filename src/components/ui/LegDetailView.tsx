@@ -67,6 +67,9 @@ export function LegDetailView({ leg, fareType, onBack }: LegDetailViewProps) {
         >
           <span className="text-lg">←</span>
         </button>
+        <h2 className="font-bold text-base text-gray-900 dark:text-gray-100">
+          Back
+        </h2>
       </div>
 
       {/* Gradient Header Card */}
