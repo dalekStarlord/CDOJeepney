@@ -31,9 +31,9 @@ export function LocationToggle() {
         'transition-all duration-200',
         'focus:outline-none focus:ring-2 focus:ring-offset-2',
         isTrackingLocation
-          ? 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500'
+          ? 'bg-blue-600 text-white hover:bg-blue-600 focus:ring-blue-500'
           : isLoading
-          ? 'bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-400 animate-pulse'
+          ? 'bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-400'
           : 'bg-white text-gray-700 hover:bg-gray-50 focus:ring-gray-500 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700',
       )}
       aria-label={
@@ -48,7 +48,7 @@ export function LocationToggle() {
       }
     >
       {isTrackingLocation ? (
-        <MapPin size={20} className="animate-pulse" />
+        <MapPin size={20}/>
       ) : (
         <MapPinOff size={20} />
       )}

@@ -40,10 +40,10 @@ const userIcon = L.divIcon({
 // Real-time GPS location marker (pulsing blue dot)
 const realTimeLocationIcon = L.divIcon({
   className: 'custom-marker gps-marker',
-  html: `<div style="position: relative;">
+  html: `<div style="position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
       <div class="gps-pulse" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background-color: rgba(59, 130, 246, 0.3); border-radius: 50%; animation: pulse 2s infinite;"></div>
-      <div style="position: relative; background-color: #3b82f6; width: 24px; height: 24px; border-radius: 50%; border: 4px solid white; box-shadow: 0 2px 8px rgba(59,130,246,0.6); z-index: 1;">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background-color: white; border-radius: 50%;"></div>
+      <div style="position: relative; background-color: rgb(16, 17, 19); width: 24px; height: 24px; border-radius: 50%; border: 4px solid white; box-shadow: 0 2px 8px rgba(59,130,246,0.6); z-index: 1; display: flex; align-items: center; justify-content: center;">
+        <div style="width: 10px; height: 10px; background-color: white; border-radius: 50%;"></div>
       </div>
     </div>`,
   iconSize: [40, 40],
@@ -157,7 +157,7 @@ export default function MapView({ hoveredItineraryId }: MapViewProps) {
                 center={[currentLocation.lat, currentLocation.lon]}
                 radius={locationAccuracy}
                 pathOptions={{
-                  color: '#3b82f6',
+                  color: '#2b2e33',
                   fillColor: '#3b82f6',
                   fillOpacity: 0.1,
                   weight: 1,
