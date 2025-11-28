@@ -2,7 +2,7 @@
  * LegDetailView component - Detailed view of individual leg
  */
 
-import { CircleDot, Circle } from 'lucide-react';
+import { CircleDot, Circle, ArrowLeft } from 'lucide-react';
 import { cn, formatDuration, formatFare, formatDistance, getModeIcon, getDisplayFare, formatStopName } from '../../lib/utils';
 import type { NormalizedLeg, FareType } from '../../lib/types';
 import * as LucideIcons from 'lucide-react';
@@ -62,13 +62,14 @@ export function LegDetailView({ leg, fareType, onBack }: LegDetailViewProps) {
       <div className="flex items-center gap-3 p-4 border-b border-gray-200 dark:border-gray-700">
         <button
           onClick={onBack}
-          className="flex-shrink-0 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          className="flex items-center gap-2 flex-shrink-0 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           aria-label="Back to route overview"
         >
-          <span className="text-lg">←</span>
+          <ArrowLeft className="h-5 w-6 text-black dark:text-white scale-x-125" />
+          <span className="font-bold text-base text-gray-900 dark:text-gray-100">Back</span>
         </button>
         <h2 className="font-bold text-base text-gray-900 dark:text-gray-100">
-          Back
+        
         </h2>
       </div>
 

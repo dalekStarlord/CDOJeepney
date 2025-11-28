@@ -9,7 +9,6 @@ import { useAppStore } from '../store/appStore';
 import { EnhancedSearchBar } from '../components/ui/EnhancedSearchBar';
 import { RouteCard } from '../components/ui/RouteCard';
 import { Button } from '../components/ui/Button';
-import { MapLegend } from '../components/ui/MapLegend';
 import RouteDetailsSheet from '../components/ui/RouteDetailsSheet';
 import { UnifiedSidebar } from '../components/ui/UnifiedSidebar';
 import { LocationToggle } from '../components/ui/LocationToggle';
@@ -328,10 +327,6 @@ export function Home() {
           {/* Location toggle button */}
           <LocationToggle />
           
-          {/* Map legend (desktop) */}
-          <div className="hidden lg:block absolute bottom-4 right-4 z-20">
-            <MapLegend />
-          </div>
         </div>
       </main>
     </div>

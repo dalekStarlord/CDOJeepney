@@ -10,6 +10,7 @@ import { LegCard } from './LegCard';
 import { LegDetailView } from './LegDetailView';
 import type { NormalizedItinerary, FareType } from '../../lib/types';
 import { formatDuration, formatFare, calculateTotalFare } from '../../lib/utils';
+import { ArrowLeft } from 'lucide-react';
 
 interface RouteDetailsSheetProps {
   itinerary: NormalizedItinerary;
@@ -71,10 +72,11 @@ export default function RouteDetailsSheet({ itinerary, fareType }: RouteDetailsS
         </h2>
         <button
           onClick={handleBackToJourneys}
-          className="text-sm text-blue-600 dark:text-blue-400 font-medium px-3 py-1.5 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+          className="flex items-center gap-2 text-sm font-medium px-3 py-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           aria-label={t('route.backToJourneys')}
         >
-          {t('route.back')}
+          <ArrowLeft className="h-5 w-6 text-black dark:text-white scale-x-125" />
+          <span className="text-gray-900 dark:text-gray-100">Back</span>
         </button>
       </div>
 
